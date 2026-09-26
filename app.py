@@ -1,5 +1,5 @@
 """
-ElectroVigía S.A.S. — Dashboard de incidentes y equipos en torres de energía
+Voltia S.A.S. — Dashboard de incidentes y equipos en torres de energía
 Grupo 1: Barras agrupadas/divergentes (básico) + Coordenadas paralelas y Sankey (otros)
 
 Autoras: Andrea Katerin Cruz Padilla · Ivon Daniela Sepúlveda Pérez
@@ -12,7 +12,7 @@ app = Dash(
     __name__,
     use_pages=True,
     suppress_callback_exceptions=True,
-    title="ElectroVigía | Dashboard de incidentes",
+    title="Voltia | Dashboard de incidentes",
 )
 server = app.server  # <- lo necesita gunicorn para producción (Render)
 
@@ -41,7 +41,7 @@ app.layout = html.Div(
         html.Div(
             [
                 html.Button("☰", id="menu-button", className="menu-button"),
-                html.Div("ElectroVigía", style={"fontWeight": "700"}),
+                html.Div("Voltia", style={"fontWeight": "700"}),
                 html.Div(style={"width": "24px"}),  # espaciador
             ],
             className="mobile-header",
@@ -55,11 +55,11 @@ app.layout = html.Div(
             [
                 html.Div(
                     [
-                        html.Div("EV", className="logo-mark"),
+                        html.Img(src="/assets/logo-voltia.jpg", className="logo-mark"),
                         html.Div(
                             [
-                                html.Div("ElectroVigía", className="brand-name"),
-                                html.Div("Contratista DEC", className="brand-sub"),
+                                html.Div("Voltia", className="brand-name"),
+                                html.Div("Luz, Potencia y Control", className="brand-sub"),
                             ]
                         ),
                     ],
@@ -77,7 +77,7 @@ app.layout = html.Div(
 )
 
 
-# ---- Interacción: abrir / cerrar el menú lateral en móvil ----
+# ---- Intpython app.pyeracción: abrir / cerrar el menú lateral en móvil ----
 @app.callback(
     Output("sidebar", "className"),
     Output("overlay", "className"),

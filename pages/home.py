@@ -7,7 +7,7 @@ layout = html.Div(
     [
         html.Div(
             [
-                html.H1("ElectroVigía S.A.S."),
+                html.H1("Voltia S.A.S."),
                 html.P(
                     "Contratista de mantenimiento e inspección de torres de energía para la "
                     "DEC (Distribuidora de Energía de Colombia). Gestionamos la atención de "
@@ -16,10 +16,10 @@ layout = html.Div(
                 ),
                 html.Div(
                     [
-                        html.Div(className="swatch", style={"background": "#0B1F3A"}),
-                        html.Div(className="swatch", style={"background": "#F2A93B"}),
+                        html.Div(className="swatch", style={"background": "#12192B"}),
+                        html.Div(className="swatch", style={"background": "#1CC9E8"}),
                         html.Div(className="swatch", style={"background": "#4A5568"}),
-                        html.Div(className="swatch", style={"background": "#FFFFFF"}),
+                        html.Div(className="swatch", style={"background": "#FFFFFF"})
                     ],
                     className="palette-row",
                 ),
