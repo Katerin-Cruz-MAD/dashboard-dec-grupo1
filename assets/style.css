@@ -1,0 +1,242 @@
+/* =======================================================
+   ElectroVigía S.A.S. — identidad institucional
+   Paleta: azul noche (#0B1F3A), ámbar energía (#F2A93B),
+           gris pizarra (#4A5568), blanco (#FFFFFF)
+   ======================================================= */
+
+:root {
+    --azul-noche: #0B1F3A;
+    --azul-medio: #12315C;
+    --ambar: #F2A93B;
+    --ambar-suave: #FBE3B8;
+    --gris: #4A5568;
+    --gris-claro: #F4F6F8;
+    --blanco: #FFFFFF;
+    --rojo-alerta: #D64545;
+    --verde-ok: #2E9E5B;
+}
+
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    font-family: "Segoe UI", Roboto, Arial, sans-serif;
+    background-color: var(--gris-claro);
+    color: var(--azul-noche);
+}
+
+/* ---------- Header móvil ---------- */
+.mobile-header {
+    display: none;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--azul-noche);
+    color: var(--blanco);
+    padding: 12px 16px;
+}
+
+.menu-button {
+    background: none;
+    border: none;
+    color: var(--blanco);
+    font-size: 24px;
+    cursor: pointer;
+}
+
+/* ---------- Sidebar (escritorio: fija) ---------- */
+.sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 250px;
+    height: 100vh;
+    background: var(--azul-noche);
+    color: var(--blanco);
+    padding: 24px 16px;
+    transition: transform 0.3s ease;
+    z-index: 1000;
+    overflow-y: auto;
+}
+
+.sidebar .logo-box {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 24px;
+}
+
+.sidebar .logo-mark {
+    width: 38px;
+    height: 38px;
+    border-radius: 8px;
+    background: var(--ambar);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    color: var(--azul-noche);
+    font-size: 18px;
+}
+
+.sidebar .brand-name {
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 1.1;
+}
+
+.sidebar .brand-sub {
+    font-size: 11px;
+    color: var(--ambar-suave);
+}
+
+.nav-link {
+    display: block;
+    color: var(--blanco);
+    text-decoration: none;
+    padding: 10px 12px;
+    border-radius: 8px;
+    margin-bottom: 4px;
+    font-size: 14px;
+    opacity: 0.85;
+}
+
+.nav-link:hover {
+    background: var(--azul-medio);
+    opacity: 1;
+}
+
+.nav-link.active {
+    background: var(--ambar);
+    color: var(--azul-noche);
+    font-weight: 600;
+    opacity: 1;
+}
+
+/* ---------- Contenido principal ---------- */
+.main-content {
+    margin-left: 250px;
+    padding: 28px 32px 48px 32px;
+    min-height: 100vh;
+}
+
+/* ---------- Tarjetas / grid responsive ---------- */
+.content-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+    margin-top: 16px;
+}
+
+.card {
+    background: var(--blanco);
+    border-radius: 12px;
+    padding: 18px 20px;
+    box-shadow: 0 2px 8px rgba(11, 31, 58, 0.08);
+}
+
+.card-full {
+    grid-column: 1 / -1;
+}
+
+.page-title {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 2px;
+}
+
+.page-subtitle {
+    font-size: 14px;
+    color: var(--gris);
+    margin-bottom: 18px;
+    border-left: 4px solid var(--ambar);
+    padding-left: 10px;
+}
+
+.filter-row {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 14px;
+}
+
+.filter-row .filter-item {
+    min-width: 220px;
+}
+
+.filter-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--gris);
+    margin-bottom: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+/* Overlay para el drawer en móvil */
+.overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(11, 31, 58, 0.45);
+    z-index: 900;
+}
+
+.overlay.visible { display: block; }
+
+/* ---------- Home institucional ---------- */
+.hero {
+    background: linear-gradient(135deg, var(--azul-noche), var(--azul-medio));
+    color: var(--blanco);
+    border-radius: 16px;
+    padding: 40px 36px;
+    margin-bottom: 24px;
+}
+
+.hero h1 { font-size: 30px; margin-bottom: 8px; }
+.hero p { color: var(--ambar-suave); max-width: 640px; }
+
+.palette-row { display: flex; gap: 10px; margin-top: 16px; }
+.swatch {
+    width: 36px; height: 36px; border-radius: 8px;
+    border: 2px solid rgba(255,255,255,0.4);
+}
+
+.board-links { display: flex; gap: 16px; margin-top: 24px; flex-wrap: wrap; }
+
+.board-link-card {
+    background: var(--blanco);
+    border-radius: 12px;
+    padding: 20px;
+    width: 260px;
+    text-decoration: none;
+    color: var(--azul-noche);
+    box-shadow: 0 2px 8px rgba(11, 31, 58, 0.08);
+    border-top: 4px solid var(--ambar);
+    transition: transform 0.15s ease;
+}
+
+.board-link-card:hover { transform: translateY(-3px); }
+
+/* ---------- Responsive ---------- */
+@media (max-width: 1200px) and (min-width: 769px) {
+    .sidebar { width: 76px; padding: 24px 10px; }
+    .sidebar .brand-name, .sidebar .brand-sub, .nav-link span.label { display: none; }
+    .main-content { margin-left: 76px; }
+}
+
+@media (max-width: 768px) {
+    .mobile-header { display: flex; }
+
+    .sidebar {
+        transform: translateX(-100%);
+        width: 260px;
+    }
+
+    .sidebar.open { transform: translateX(0); }
+
+    .main-content { margin-left: 0; padding: 20px 16px 40px 16px; }
+
+    .content-grid { grid-template-columns: 1fr; }
+
+    .hero { padding: 28px 20px; }
+}
