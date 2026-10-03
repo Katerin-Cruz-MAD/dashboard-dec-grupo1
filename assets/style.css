@@ -190,10 +190,24 @@ body {
     border-radius: 16px;
     padding: 40px 36px;
     margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
 }
 
-.hero h1 { font-size: 30px; margin-bottom: 8px; }
-.hero p { color: var(--ambar-suave); max-width: 640px; }
+.hero-text {
+    flex: 1;
+    min-width: 280px;
+}
+
+.hero-logo {
+    height: 180px;
+    width: auto;
+    flex-shrink: 0;
+}
+
+.hero h1 { font-size: 48px; margin-bottom: 8px; }
 
 .palette-row { display: flex; gap: 10px; margin-top: 16px; }
 .swatch {
@@ -243,5 +257,93 @@ body {
 
     .content-grid { grid-template-columns: 1fr; }
 
-    .hero { padding: 28px 20px; }
+    .hero { flex-direction: column; text-align: center; }
+}
+.sidebar {
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar-footer {
+    margin-top: auto;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.nav-links-wrapper {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    padding: 24px 0;
+}
+
+.profile-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+}
+
+.profile-avatar {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: var(--ambar);
+    color: var(--azul-noche);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 12px;
+    flex-shrink: 0;
+}
+
+.profile-name {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--blanco);
+    line-height: 1.2;
+}
+
+.profile-role {
+    font-size: 10px;
+    color: var(--ambar-suave);
+}
+.kpi-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin: 16px 0 20px 0;
+}
+
+.kpi-card {
+    background: var(--blanco);
+    border-radius: 12px;
+    padding: 16px 18px;
+    box-shadow: 0 2px 8px rgba(11, 31, 58, 0.08);
+    border-left: 4px solid var(--ambar);
+}
+
+.kpi-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--gris);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-bottom: 6px;
+}
+
+.kpi-value {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--azul-noche);
+}
+
+.kpi-alert {
+    color: #D64545;
+}
+
+@media (max-width: 768px) {
+    .kpi-row { grid-template-columns: repeat(2, 1fr); }
 }

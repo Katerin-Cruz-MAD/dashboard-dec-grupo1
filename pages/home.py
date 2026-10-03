@@ -5,6 +5,8 @@ dash.register_page(__name__, path="/", name="Inicio", icon="🏠")
 
 layout = html.Div(
     [
+html.Div(
+    [
         html.Div(
             [
                 html.H1("Voltia S.A.S."),
@@ -19,13 +21,19 @@ layout = html.Div(
                         html.Div(className="swatch", style={"background": "#12192B"}),
                         html.Div(className="swatch", style={"background": "#1CC9E8"}),
                         html.Div(className="swatch", style={"background": "#4A5568"}),
-                        html.Div(className="swatch", style={"background": "#FFFFFF"})
+                        html.Div(className="swatch", style={"background": "#FFFFFF"}),
+                        html.Div(className="swatch", style={"background": "#F2994A"}),
+                        html.Div(className="swatch", style={"background": "#F2C94C"}),
                     ],
                     className="palette-row",
                 ),
             ],
-            className="hero",
+            className="hero-text",
         ),
+        html.Img(src="/assets/logo-voltia.jpg", className="hero-logo"),
+    ],
+    className="hero",
+),
 
         html.Div(
             [

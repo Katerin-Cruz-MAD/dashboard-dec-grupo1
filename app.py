@@ -65,8 +65,36 @@ app.layout = html.Div(
                     ],
                     className="logo-box",
                 ),
-                html.Div(nav_links()),
+                html.Div(nav_links(), className="nav-links-wrapper"),
+            html.Div(
+    [
+        html.Div(
+            [
+                html.Div("AC", className="profile-avatar"),
+                html.Div(
+                    [
+                        html.Div("Andrea Katerin Cruz Padilla", className="profile-name"),
+                        html.Div("Autora", className="profile-role"),
+                    ]
+                ),
             ],
+            className="profile-item",
+        ),
+        html.Div(
+            [
+                html.Div("IS", className="profile-avatar"),
+                html.Div(
+                    [
+                        html.Div("Ivon Daniela Sepúlveda Pérez", className="profile-name"),
+                        html.Div("Autora", className="profile-role"),
+                    ]
+                ),
+            ],
+            className="profile-item",
+        ),
+    ],
+    className="sidebar-footer",
+)],
             id="sidebar",
             className="sidebar",
         ),

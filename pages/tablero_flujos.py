@@ -7,11 +7,13 @@ from utils.data_loader import load_data, ctes_disponibles
 
 dash.register_page(__name__, path="/flujos", name="Tablero de Flujos", icon="🔀")
 
-AZUL = "#0B1F3A"
-AMBAR = "#F2A93B"
+AZUL = "#12192B"
+CIAN = "#1CC9E8"
+NARANJA = "#F2994A"
+AMARILLO = "#F2C94C"
 GRIS = "#4A5568"
-PALETA_DEP = ["#0B1F3A", "#12315C", "#2E6E9E", "#4F9DBB", "#7CC6C0", "#F2A93B"]
-PALETA_TIPO = ["#D64545", "#F2A93B", "#2E9E5B", "#4F9DBB", "#8E6CB0"]
+PALETA_DEP = ["#12192B", "#1CC9E8", "#4A5568", "#F2994A", "#F2C94C", "#5B7DB1"]
+PALETA_TIPO = ["#F2994A", "#1CC9E8", "#F2C94C", "#4A5568", "#5B7DB1"]
 
 TOP_N_DEPARTAMENTOS = 6
 
@@ -23,6 +25,41 @@ layout = html.Div(
             "Suroccidente. El flujo muestra cómo se reparten los avisos de los 6 "
             "departamentos con mayor volumen entre los distintos tipos y su estado final.",
             className="page-subtitle",
+        ),
+
+        # ---- KPIs ----
+        html.Div(
+            [
+                html.Div(
+                    [
+                        html.Div("Total de avisos", className="kpi-label"),
+                        html.Div(id="kpi-flujos-total", className="kpi-value"),
+                    ],
+                    className="kpi-card",
+                ),
+                html.Div(
+                    [
+                        html.Div("% Atrasados", className="kpi-label"),
+                        html.Div(id="kpi-flujos-atrasado", className="kpi-value kpi-alert"),
+                    ],
+                    className="kpi-card",
+                ),
+                html.Div(
+                    [
+                        html.Div("Departamento con más avisos", className="kpi-label"),
+                        html.Div(id="kpi-flujos-top-depto", className="kpi-value"),
+                    ],
+                    className="kpi-card",
+                ),
+                html.Div(
+                    [
+                        html.Div("Tipo de aviso más frecuente", className="kpi-label"),
+                        html.Div(id="kpi-flujos-top-tipo", className="kpi-value"),
+                    ],
+                    className="kpi-card",
+                ),
+            ],
+            className="kpi-row",
         ),
 
         html.Div(
@@ -37,6 +74,13 @@ layout = html.Div(
                             value="Todos",
                             clearable=False,
                         ),
+                    ],
+                    className="filter-item",
+                ),
+                html.Div(
+                    [
+                        html.Div(className="filter-label", style={"visibility": "hidden"}, children="."),
+                        html.Button("✕ Limpiar filtros", id="boton-limpiar-filtros-flujos", className="clear-button"),
                     ],
                     className="filter-item",
                 ),
@@ -83,6 +127,42 @@ def filtra_cte(df: pd.DataFrame, cte: str) -> pd.DataFrame:
     return df
 
 
+@callback(
+    Output("filtro-cte", "value", allow_duplicate=True),
+    Input("boton-limpiar-filtros-flujos", "n_clicks"),
+    prevent_initial_call=True,
+)
+def limpiar_filtros_flujos(n_clicks):
+    return "Todos"
+
+
+@callback(
+    Output("kpi-flujos-total", "children"),
+    Output("kpi-flujos-atrasado", "children"),
+    Output("kpi-flujos-top-depto", "children"),
+    Output("kpi-flujos-top-tipo", "children"),
+    Input("filtro-cte", "value"),
+)
+def actualizar_kpis_flujos(cte):
+    df = filtra_cte(load_data(), cte)
+
+    total = len(df)
+    pct_atrasado = (df["Tiempo aviso"] == "Atrasado").mean() * 100 if total else 0
+
+    top_depto = df["Departamento"].value_counts()
+    top_tipo = df["Tipo de aviso"].value_counts()
+
+    depto_txt = f"{top_depto.index[0]} ({top_depto.iloc[0]})" if len(top_depto) else "—"
+    tipo_txt = f"{top_tipo.index[0]} ({top_tipo.iloc[0]})" if len(top_tipo) else "—"
+
+    return (
+        f"{total:,}".replace(",", "."),
+        f"{pct_atrasado:.1f}%",
+        depto_txt,
+        tipo_txt,
+    )
+
+
 @callback(Output("grafico-sankey", "figure"), Input("filtro-cte", "value"))
 def actualizar_sankey(cte):
     df = filtra_cte(load_data(), cte)
@@ -99,7 +179,7 @@ def actualizar_sankey(cte):
     colores_nodo = (
         [PALETA_DEP[i % len(PALETA_DEP)] for i in range(len(top_deps))]
         + [PALETA_TIPO[i % len(PALETA_TIPO)] for i in range(len(tipos))]
-        + [AMBAR, AZUL]
+        + [NARANJA, AZUL]
     )
 
     flujo1 = df.groupby(["Departamento", "Tipo de aviso"]).size().reset_index(name="valor")
@@ -129,7 +209,7 @@ def actualizar_sankey(cte):
                 source=source,
                 target=target,
                 value=value,
-                color="rgba(11,31,58,0.15)",
+                color="rgba(18,25,43,0.15)",
                 hovertemplate="%{source.label} → %{target.label}<br>%{value} avisos<extra></extra>",
             ),
         )
@@ -142,11 +222,19 @@ def actualizar_sankey(cte):
     return fig
 
 
+PRIORIDAD_ORDEN = ["Semana", "Mes", "Trimestre", "Semestre", "Año", "Dos años", "Tres años", "Seis años"]
+PRIORIDAD_CODIGO = {nombre: i + 1 for i, nombre in enumerate(PRIORIDAD_ORDEN)}
+
+
 @callback(Output("grafico-parcoords", "figure"), Input("filtro-cte", "value"))
 def actualizar_parcoords(cte):
     df = filtra_cte(load_data(), cte).copy()
 
+    df = df[df["Prioridad"].isin(PRIORIDAD_ORDEN)]
+
     df["tiempo_num"] = (df["Tiempo aviso"] == "Atrasado").astype(int)
+    df["prioridad_num"] = df["Prioridad"].map(PRIORIDAD_CODIGO)
+    df["dias_abierto_cap"] = df["Días abierto"].clip(upper=730)
 
     fig = go.Figure(
         go.Parcoords(
@@ -161,13 +249,14 @@ def actualizar_parcoords(cte):
                 ),
             ),
             dimensions=[
-                dict(label="Días abierto", values=df["Días abierto"]),
-                dict(label="Prioridad (días)", values=df["Prioridad días"]),
-                dict(label="Trimestre aviso", values=df["Trimestre"], tickvals=[1, 2, 3, 4]),
                 dict(
-                    label="Desviación vs. prioridad",
-                    values=df["Cumple prioridad periodos"].fillna(0),
+                    label="Nivel de prioridad",
+                    values=df["prioridad_num"],
+                    tickvals=list(PRIORIDAD_CODIGO.values()),
+                    ticktext=list(PRIORIDAD_CODIGO.keys()),
                 ),
+                dict(label="Días abierto (máx. 2 años)", values=df["dias_abierto_cap"]),
+                dict(label="Trimestre del aviso", values=df["Trimestre"], tickvals=[1, 2, 3, 4]),
             ],
         )
     )
